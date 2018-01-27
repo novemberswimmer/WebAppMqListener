@@ -5,17 +5,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
-@Controller
-public class WelcomeController {
+@Component
+public class JmsMessageProducer {
 
     private static final Logger logger = LoggerFactory.getLogger(JmsMessageProducer.class);
 
@@ -25,27 +24,26 @@ public class WelcomeController {
     private JmsTemplate template = null;
     private int messageCount = 100;
 
-    @RequestMapping(value="/welcome", method = RequestMethod.GET)
-    public String welcome() throws JMSException {
-        generateMessages();
-        return "welcome";
-    }
+    /**
+     * Generates JMS messages
+     */
+    @PostConstruct
+    public void generateMessages() throws JMSException {
+        for (int i = 0; i < messageCount; i++) {
+            final int index = i;
+            final String text = "Message number is " + i + ".";
 
-    private void generateMessages() throws JMSException {
-
-        final String text ="Hello from Controller";
-
-
-        template.send(new MessageCreator() {
+            template.send(new MessageCreator() {
                 public Message createMessage(Session session) throws JMSException {
                     TextMessage message = session.createTextMessage(text);
-                    message.setIntProperty(MESSAGE_COUNT, 1);
+                    message.setIntProperty(MESSAGE_COUNT, index);
 
                     logger.info("Sending message: " + text);
 
                     return message;
                 }
             });
-
+        }
     }
+
 }
