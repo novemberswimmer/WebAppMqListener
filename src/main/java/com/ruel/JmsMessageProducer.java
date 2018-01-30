@@ -22,7 +22,7 @@ public class JmsMessageProducer {
 
     @Autowired
     private JmsTemplate template = null;
-    private int messageCount = 100;
+    private int messageCount = 10;
 
     /**
      * Generates JMS messages
