@@ -50,18 +50,6 @@
 
 
 
-    <!-- JMS Consumer Configuration -->
-    <bean id="jmsConsumerConnectionFactory"
-          class="org.springframework.jms.connection.SingleConnectionFactory"
-          depends-on="broker"
-          p:targetConnectionFactory-ref="jmsFactory" />
-
-    <jms:listener-container container-type="default"
-                            connection-factory="jmsConsumerConnectionFactory"
-                            acknowledge="auto">
-        <jms:listener destination="org.springbyexample.jms.test" ref="jmsMessageListener" />
-    </jms:listener-container>
-
     <!-- Counter for consumer to increment and test to verify count -->
     <bean id="counter" class="java.util.concurrent.atomic.AtomicInteger" />
 
