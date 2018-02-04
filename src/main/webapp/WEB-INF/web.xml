@@ -17,4 +17,36 @@
     <servlet-name>hello</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>jokolia-agent</servlet-name>
+    <servlet-class>org.jolokia.http.AgentServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>jokolia-agent</servlet-name>
+    <url-pattern>/jolokia/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>jokolia-proxy</servlet-name>
+    <servlet-class>io.hawt.web.ProxyServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>jokolia-proxy</servlet-name>
+    <url-pattern>/proxy/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>maven-source</servlet-name>
+    <servlet-class>io.hawt.web.JavaDocServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>maven-source</servlet-name>
+    <url-pattern>/javadoc/*</url-pattern>
+  </servlet-mapping>
+
 </web-app>
