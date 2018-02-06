@@ -18,32 +18,24 @@ public class JmsMessageProducer {
 
     private static final Logger logger = LoggerFactory.getLogger(JmsMessageProducer.class);
 
-    protected static final String MESSAGE_COUNT = "messageCount";
 
     @Autowired
     private JmsTemplate template = null;
-    private int messageCount = 10;
 
-    /**
-     * Generates JMS messages
-     */
-    @PostConstruct
-    public void generateMessages() throws JMSException {
-        for (int i = 0; i < messageCount; i++) {
-            final int index = i;
-            final String text = "Message number is " + i + ".";
+
+    public void generateMessages(String message, final String correlationId) throws JMSException {
+
+            final String text = message;
 
             template.send(new MessageCreator() {
                 public Message createMessage(Session session) throws JMSException {
                     TextMessage message = session.createTextMessage(text);
-                    message.setIntProperty(MESSAGE_COUNT, index);
-
-                    logger.info("Sending message: " + text);
+                    message.setJMSCorrelationID(correlationId);
 
                     return message;
                 }
             });
-        }
+
     }
 
 }
